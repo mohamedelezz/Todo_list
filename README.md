@@ -10,7 +10,7 @@ ToDo list is a simple web application to save Your daily tasks in order not to m
 * Pick a date from callendar
 * Edit task
 * Delete single task
-* send email to user if before 24/h of due date
+* send email to user before 24/h of due date
 
 ## Technologies used:
 
