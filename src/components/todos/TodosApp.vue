@@ -6,13 +6,13 @@
       >Add Todo <span class="fa fa-plus-square card-link"></span
     ></b-button>
     <br />
-    <TodoItemVue :getTodo="getTodos" :todos="todos" @updateTodo="updateTodo" />
+    <TodoItem :getTodo="getTodos" :todos="todos" @updateTodo="updateTodo" @deleteTodo="deleteTodo" />
   </div>
 </template>
 
 <script>
 // sengle responsibility principle
-import TodoItemVue from "./TodoItem.vue";
+import TodoItem from "./TodoItem.vue";
 import SharedForm from "./SharedForm.vue";
 import http from "@/httpService";
 // import TodoForm from "./TodoForm.vue";
@@ -29,22 +29,17 @@ export default {
     this.getTodos();
   },
   components: {
-    TodoItemVue,
+    TodoItem,
     SharedForm,
     // TodoForm,
   },
   methods: {
     getTodos() {
       http
-        .get("todos", {
-          headers: {
-            Authorization: "Bearer " + this.$store.state.token,
-          },
-        })
+        .get("todos")
         .then((response) => {
           this.$store.commit("setTodo", response.data);
           this.todos = response.data;
-          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -70,8 +65,7 @@ export default {
         fd.append("file", todo.file);
       }else{
         fd.append("file", null)
-      }
-      
+      }      
       console.log("now i update todo", todo);
       http
         .put(`todos/${todo.id}`, fd, {
@@ -87,8 +81,17 @@ export default {
           console.log(error);
         });
     }},
-
-    postTodo(todo) {
+    deleteTodo(todo) {
+      http.delete(`todos/${todo.id}`, {data:{imageId:todo.imageId}}).then((response) => {
+          this.$store.commit("setTodo", response.data);
+          this.getTodos();
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+ 
+ postTodo(todo) {
       if (
         this.title == "" &&
         this.description == "" &&
@@ -123,8 +126,7 @@ export default {
     }},
 
     getModalRef(ref) {
-      console.log(ref);
-      this.modalRef = ref;
+        this.modalRef = ref;
     },
   },
 };

@@ -35,16 +35,13 @@
 <script>
 import moment from "moment";
 import SharedForm from "./SharedForm.vue";
-import http from "@/httpService";
 
 export default {
   name: "TodoApp",
   data() {
     return {
-      isModalShow: false,
       modalRef: null,
       editingTodo: null,
-      id: '',
     };
   },
   props: {
@@ -68,21 +65,22 @@ export default {
     moment() {
       return moment();
     },
-    getModalRef(modalRef) {
+    getModalRef(modalRef) { // get modal reference from child component to use in parent component
       this.modalRef = modalRef;
     },
     updateTodo(todo) {
       this.$emit("updateTodo", todo);
     },
-    // http delete request
     deleteTodo(id, imageId) {
-      console.log("now i delete todo", id);
-      http.delete(`/todos/${id}`, {data:{imageId:imageId}}).then((response) => {
-       console.log(response);
-       this.getTodo();
-      });
+      const todo = {
+        id,
+        imageId
+      };
+      this.$emit("deleteTodo", todo);
     },
-  },
+ 
+    },
+
 
 
 };

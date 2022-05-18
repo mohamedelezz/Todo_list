@@ -45,20 +45,13 @@ export default {
     }, 
   },
   watch: {
-    editingTodo() {
-      this.title = this.editingTodo.title;
-      this.description = this.editingTodo.description;
-      this.due_date = this.editingTodo.dueDate;
-      this.status = this.editingTodo.status;
+    editingTodo(to) {  
+      this.title = to.title;
+      this.description = to.description;
+      this.due_date = to.dueDate;
+      this.status = to.status;
     },
-    isModalShow(newValue) {
-      if (newValue) {
-        this.$refs["my-modal"].show();
-      } else {
-        this.$refs["my-modal"].hide();
-      }
-    },
-  },
+   },
   data() {
     return {
       title: "",
@@ -92,8 +85,7 @@ export default {
       
     },
     onFileSelected: function (e) {
-      this.selectedFile = e.target.files[0];
-     
+      this.selectedFile = e.target.files[0];    
      
     },
     //
@@ -118,10 +110,8 @@ export default {
         if(this.editingTodo){ 
           todo['id'] = this.editingTodo.id
           todo['image'] = this.editingTodo.image
-          todo['imageId'] = this.editingTodo.imageId
-          
-          }
-          
+          todo['imageId'] = this.editingTodo.imageId          
+          }          
         this.$emit("save", todo);
     }},
   },
