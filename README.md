@@ -31,5 +31,5 @@ npm install
 ``
 ### Compiles and minifies for production
 ```
-npm run build
+npm start
 ```
